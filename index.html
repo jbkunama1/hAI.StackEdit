@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Highfish StackEdit Workspace</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css" />
+</head>
+<body>
+  <header>
+    <h1>Highfish StackEdit Workspace</h1>
+    <p>Selbst gehosteter Markdown-Workspace auf Basis von StackEdit und Docker.</p>
+    <p>
+      <img src="https://img.shields.io/badge/stackedit-self--hosted-blue" alt="StackEdit Badge" />
+      <img src="https://img.shields.io/badge/docker-compose-blue" alt="Docker Compose Badge" />
+      <img src="https://img.shields.io/badge/markdown-editor-success" alt="Markdown Badge" />
+    </p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Über das Projekt</h2>
+      <p>
+        Dieses Projekt stellt eine minimale, aber praxistaugliche Umgebung für StackEdit bereit.
+        Die Kernidee: Du startest einen Container mit Docker Compose, erreichst StackEdit über deinen
+        Browser und synchronisierst deine Notizen mit Diensten wie Google Drive oder GitHub.
+      </p>
+    </section>
+
+    <section>
+      <h2>Schnellstart</h2>
+      <ol>
+        <li>Repo klonen und ins Verzeichnis wechseln.</li>
+        <li><code>.env.example</code> nach <code>.env</code> kopieren und bei Bedarf anpassen.</li>
+        <li><code>docker compose up -d</code> ausführen.</li>
+        <li>Im Browser <code>http://&lt;dein-server&gt;:3030</code> öffnen.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Cloud-Integration</h2>
+      <p>
+        StackEdit kann Dateien mit Google Drive, Dropbox und GitHub synchronisieren.
+        Die Konfiguration der OAuth-Verknüpfungen erfolgt vollständig in der StackEdit-Oberfläche.
+      </p>
+    </section>
+
+    <section>
+      <h2>Weiterführende Links</h2>
+      <ul>
+        <li><a href="https://stackedit.io/" target="_blank" rel="noopener">Offizielle StackEdit-Seite</a></li>
+        <li><a href="https://github.com/benweet/stackedit" target="_blank" rel="noopener">StackEdit auf GitHub</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 – Highfish StackEdit Workspace. Persönliche Arbeitsbasis.</p>
+  </footer>
+</body>
+</html>
