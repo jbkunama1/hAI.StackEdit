@@ -1,107 +1,109 @@
 
-# Highfish StackEdit Workspace
+# Highfish StackEdit Workspace (mit eigener OAuth-Konfiguration)
 
 ![StackEdit](https://img.shields.io/badge/stackedit-self--hosted-blue)
 ![Docker](https://img.shields.io/badge/docker-compose-blue)
 ![Markdown](https://img.shields.io/badge/markdown-editor-success)
+![OAuth](https://img.shields.io/badge/OAuth-Google%20%26%20GitHub-orange)
 
-Dieses Repo stellt deinen selbst gehosteten StackEdit-Workspace als Docker-Setup bereit. Es ist so aufgebaut, dass du es einfach auf einen Server klonen, starten und über GitHub Pages dokumentieren kannst.
+Dieses Repo stellt einen selbst gehosteten StackEdit-Workspace bereit, der mit **eigenen OAuth-Credentials** für Google Drive und GitHub arbeitet. Ziel: deine eigene Domain/Subdomain (z. B. über Cloudflare-Tunnel) nutzt StackEdit mit funktionierender Cloud-Synchronisation.
 
 ## Überblick
 
-StackEdit ist ein In-Browser-Markdown-Editor, der Dateien lokal im Browser speichert und mit Diensten wie Google Drive, Dropbox und GitHub synchronisieren kann.[web:33][web:35]
-
-Dieses Repo kapselt deinen StackEdit-Container inklusive Volume und externem Docker-Netzwerk in einer `docker-compose.yml` und ergänzt eine kleine Projektseite (`index.html`) für GitHub Pages.
+- Image: `qmcgaw/stackedit` – leichtgewichtige Server-Variante von StackEdit.[web:47][web:53]
+- OAuth über Umgebungsvariablen:
+  - `GOOGLE_CLIENT_ID`, `GOOGLE_API_KEY`
+  - `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`[web:53]
+- Auslieferung über deine Domain/Subdomain (z. B. `https://notes.deinedomain.tld`) hinter Cloudflare.
 
 ## Voraussetzungen
 
 - Docker und Docker Compose sind installiert.
-- Externes Docker-Netzwerk mit dem Namen `highfishNetwork` (oder ein eigener Name, siehe `.env.example`).
-- Port `3030` (oder dein Wunschport) ist auf dem Host frei.
+- Externes Docker-Netzwerk (Standard: `highfishNetwork`).
+- Port `3030` (oder Wunschport) auf dem Host frei.
+- Eigene OAuth-Clients bei Google und GitHub sind eingerichtet.
 
-### Netzwerk anlegen (falls noch nicht vorhanden)
+## Schritt 1: Google OAuth-Client anlegen
+
+1. In der **Google Cloud Console** ein Projekt anlegen.
+2. Die **Google Drive API** und ggf. weitere benötigte APIs aktivieren.[web:60]
+3. Unter "APIs & Services" → "Credentials" einen **OAuth 2.0 Client ID** vom Typ "Web application" erstellen.[web:60]
+4. Als **Authorized JavaScript origins** deine Domain/Subdomain eintragen, z. B.:
+   - `https://notes.deinedomain.tld`
+5. Als **Authorized redirect URIs** den Pfad verwenden, den StackEdit erwartet (siehe qmcgaw-Doku, z. B. `https://notes.deinedomain.tld/auth/google/callback`).
+6. Die Werte **Client ID** und ggf. **API Key** notieren.[web:60]
+
+## Schritt 2: GitHub OAuth-App anlegen
+
+1. Auf GitHub unter **Settings → Developer settings → OAuth Apps** eine neue OAuth-App erstellen.[web:54]
+2. Als **Homepage URL** deine StackEdit-URL eintragen, z. B. `https://notes.deinedomain.tld`.
+3. Als **Authorization callback URL** den passenden Callback-Pfad eintragen (siehe qmcgaw-Doku, z. B. `https://notes.deinedomain.tld/auth/github/callback`).[web:54]
+4. Nach dem Speichern erhältst du **Client ID** und **Client Secret**.[web:54][web:57]
+
+## Schritt 3: .env ausfüllen
+
+Nutze `.env.example` als Vorlage und lege eine `.env` im Repo an:
+
+- `STACKEDIT_IMAGE` – Standard: `qmcgaw/stackedit`
+- `STACKEDIT_CONTAINER_NAME` – z. B. `stackedit`
+- `STACKEDIT_PORT` – Host-Port, Standard: `3030`
+- `STACKEDIT_NETWORK` – Name des externen Docker-Netzwerks
+- `STACKEDIT_ROOT_URL` – Root-URL, i. d. R. `/`
+- `STACKEDIT_USER_BUCKET_NAME` – interner Bucket-Name, Standard: `stackedit-users`
+- `GOOGLE_CLIENT_ID` – aus der Google Cloud Console
+- `GOOGLE_API_KEY` – aus der Google Cloud Console
+- `GITHUB_CLIENT_ID` – aus den GitHub OAuth-Einstellungen
+- `GITHUB_CLIENT_SECRET` – aus den GitHub OAuth-Einstellungen
+
+**Wichtig:** `.env` gehört nicht ins öffentliche Repo; halte Client Secrets privat.[web:63]
+
+## Schritt 4: Docker-Compose starten
 
 ```bash
+cp .env.example .env   # falls noch nicht vorhanden, dann Werte anpassen
+
+# externes Netzwerk anlegen (falls nötig)
 docker network create highfishNetwork
-```
 
-## Konfiguration über Umgebungsvariablen
+# StackEdit starten
+docker compose up -d
 
-Über die Datei `.env` (bzw. `.env.example` als Vorlage) kannst du zentrale Einstellungen anpassen:
-
-- `STACKEDIT_IMAGE` – Docker-Image, Standard: `benweet/stackedit:latest`
-- `STACKEDIT_CONTAINER_NAME` – Container-Name, Standard: `stackedit`
-- `STACKEDIT_PORT` – Host-Port, über den StackEdit erreichbar ist, Standard: `3030`
-- `STACKEDIT_NETWORK` – Name des externen Docker-Netzwerks, Standard: `highfishNetwork`
-
-## Start und Stop
-
-```bash
-# im Repo-Verzeichnis
-cp .env.example .env   # Werte bei Bedarf anpassen
-docker compose up -d   # StackEdit starten
-
-docker compose down    # StackEdit stoppen
+# StackEdit stoppen
+docker compose down
 ```
 
 Zugriff im Browser:
 
-- `http://<dein-server>:STACKEDIT_PORT` – z. B. `http://192.168.1.10:3030`
+- `https://notes.deinedomain.tld` (über Cloudflare/Reverse Proxy auf Port 3030 → 8000 im Container).
 
-Falls du einen Reverse Proxy (z. B. über Cloudflare, Nginx Proxy Manager, Traefik) nutzt, leitest du diesen Port einfach auf die gewünschte Domain/Subdomain weiter.
+## Cloudflare / Reverse Proxy
 
-## Persistenz
+- Dein Cloudflare-Tunnel/Reverse Proxy zeigt auf `http://<dein-server>:STACKEDIT_PORT`.
+- SSL/TLS-Modus so wählen, dass keine Redirect-Schleifen entstehen.
+- Die Domain/Subdomain muss exakt zu den in Google/GitHub hinterlegten OAuth-Redirect-URLs passen.[web:19][web:54]
 
-Serverseitige Daten werden im Docker-Volume `stackedit_data` gespeichert. Dieses Volume bleibt auch nach `docker compose down` erhalten, solange du es nicht explizit löschst.
+## Cloud-Integration in StackEdit
 
-### Backup-Idee (lokal als Tarball)
+Mit korrekt gesetzten OAuth-ENV-Variablen und passender Domain kannst du in der StackEdit-Weboberfläche:
 
-```bash
-docker run --rm   -v stackedit_data:/data   -v "$PWD:/backup"   busybox sh -c "tar czf /backup/stackedit_data.tar.gz /data"
-```
+- **Google Drive**-Workspaces verknüpfen und Ordner als Workspace nutzen.[web:33][web:35]
+- Dokumente nach **GitHub/Gist** veröffentlichen und aktualisieren.[web:33][web:35]
 
-Die Datei `stackedit_data.tar.gz` kannst du dann extern sichern.
-
-## Cloud-Integration (Google Drive & GitHub)
-
-Die Anbindung an Google Drive, Dropbox und GitHub wird in StackEdit selbst über die Weboberfläche verwaltet, nicht über zusätzliche Docker-Parameter.[web:33][web:35]
-
-### Google Drive
-
-1. StackEdit im Browser öffnen.
-2. Im Menü einen Google-Workspace bzw. ein Google-Drive-Konto verknüpfen.
-3. Einen Ordner in Google Drive als Workspace auswählen.
-4. Dokumente in StackEdit mit diesem Workspace synchronisieren.
-
-### GitHub / Gist
-
-1. In StackEdit ein Dokument öffnen.
-2. Über **Publish** GitHub oder Gist als Ziel auswählen.
-3. Repo/Pfad bzw. Gist angeben und die OAuth-Freigabe durchführen.
-4. Änderungen aus StackEdit heraus nach GitHub pushen.
+Die Anbindung läuft dann über deine eigenen OAuth-Clients, nicht über die Standard-Clients von stackedit.io.
 
 ## Repository-Struktur
 
-- `docker-compose.yml` – Docker-Setup für den StackEdit-Container
-- `.env.example` – Beispielkonfiguration für Port, Container-Namen und Netzwerk
+- `docker-compose.yml` – Docker-Setup für `qmcgaw/stackedit` mit OAuth-ENV-Variablen
+- `.env.example` – Vorlage für deine Konfiguration
 - `README.md` – diese Dokumentation
-- `index.html` – einfache Projektseite für GitHub Pages
+- `index.html` – einfache Projektseite (lokale Doku, kein spezielles GitHub-Pages-Setup)
 
-## GitHub Pages
+## Sicherheitshinweise
 
-Die Datei `index.html` ist so vorbereitet, dass du sie direkt über GitHub Pages ausliefern kannst.
-
-Typischer Ablauf:
-
-1. Repo zu GitHub pushen.
-2. In den Repo-Einstellungen GitHub Pages aktivieren (z. B. Branch `main`, Root `/`).
-3. `https://<dein-user>.github.io/<dein-repo>/` aufrufen.
-
-## Hinweise zu Cloudflare / Reverse Proxy
-
-- Achte darauf, dass deine Domain/Subdomain im Browser exakt zu der Redirect-URI passt, die Google/GitHub für OAuth erwartet.
-- Falls du einen Cloudflare-Tunnel nutzt, sollte der Tunnel auf den Host/Port zeigen, auf dem dein StackEdit-Container läuft.
+- Client Secrets nicht im Repo commiten (GitHub public).
+- `.env` lokal oder in Host-spezifischen Secrets/Env-Management (z.. B. Portainer) halten.[web:61][web:63]
+- Nur HTTPS für produktiven Zugriff verwenden.
 
 ## Lizenz
 
-Dieses Setup ist als persönliche Arbeitsgrundlage gedacht. Du kannst später eine Lizenz deiner Wahl ergänzen (z. B. MIT), wenn du das Repo öffentlich teilen möchtest.
+Dieses Projekt steht unter der **MIT-Lizenz**. Du kannst es frei verwenden, anpassen und weitergeben, solange der Lizenztext beigefügt bleibt.

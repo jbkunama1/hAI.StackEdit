@@ -4,27 +4,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Highfish StackEdit Workspace</title>
+  <title>Highfish StackEdit Workspace (OAuth)</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css" />
 </head>
 <body>
   <header>
-    <h1>Highfish StackEdit Workspace</h1>
-    <p>Selbst gehosteter Markdown-Workspace auf Basis von StackEdit und Docker.</p>
+    <h1>Highfish StackEdit Workspace (OAuth)</h1>
+    <p>Selbst gehosteter Markdown-Editor mit eigener OAuth-Konfiguration für Google Drive und GitHub.</p>
     <p>
       <img src="https://img.shields.io/badge/stackedit-self--hosted-blue" alt="StackEdit Badge" />
       <img src="https://img.shields.io/badge/docker-compose-blue" alt="Docker Compose Badge" />
       <img src="https://img.shields.io/badge/markdown-editor-success" alt="Markdown Badge" />
+      <img src="https://img.shields.io/badge/OAuth-Google%20%26%20GitHub-orange" alt="OAuth Badge" />
     </p>
   </header>
 
   <main>
     <section>
-      <h2>Über das Projekt</h2>
+      <h2>Über dieses Setup</h2>
       <p>
-        Dieses Projekt stellt eine minimale, aber praxistaugliche Umgebung für StackEdit bereit.
-        Die Kernidee: Du startest einen Container mit Docker Compose, erreichst StackEdit über deinen
-        Browser und synchronisierst deine Notizen mit Diensten wie Google Drive oder GitHub.
+        Dieses Projekt stellt eine StackEdit-Instanz bereit, die über eigene OAuth-Credentials mit Google Drive und
+        GitHub kommunizieren kann. Damit kannst du deine Notizen unter deiner eigenen Domain betreiben und trotzdem
+        Cloud-Synchronisation nutzen.
       </p>
     </section>
 
@@ -32,17 +33,19 @@
       <h2>Schnellstart</h2>
       <ol>
         <li>Repo klonen und ins Verzeichnis wechseln.</li>
-        <li><code>.env.example</code> nach <code>.env</code> kopieren und bei Bedarf anpassen.</li>
+        <li><code>.env.example</code> nach <code>.env</code> kopieren und OAuth-Werte eintragen.</li>
+        <li>Externes Docker-Netzwerk anlegen (falls nötig).</li>
         <li><code>docker compose up -d</code> ausführen.</li>
-        <li>Im Browser <code>http://&lt;dein-server&gt;:3030</code> öffnen.</li>
+        <li>Domain/Subdomain über Cloudflare/Tunnel auf den Host-Port leiten.</li>
+        <li>StackEdit im Browser öffnen und Cloud-Workspaces einrichten.</li>
       </ol>
     </section>
 
     <section>
       <h2>Cloud-Integration</h2>
       <p>
-        StackEdit kann Dateien mit Google Drive, Dropbox und GitHub synchronisieren.
-        Die Konfiguration der OAuth-Verknüpfungen erfolgt vollständig in der StackEdit-Oberfläche.
+        Mit korrekt gesetzten Umgebungsvariablen kann StackEdit deine eigenen OAuth-Clients für Google und GitHub
+        nutzen. Die eigentliche Verknüpfung (Workspaces, Publish-Targets) erfolgt wie gewohnt in der StackEdit-Oberfläche.
       </p>
     </section>
 
@@ -51,12 +54,13 @@
       <ul>
         <li><a href="https://stackedit.io/" target="_blank" rel="noopener">Offizielle StackEdit-Seite</a></li>
         <li><a href="https://github.com/benweet/stackedit" target="_blank" rel="noopener">StackEdit auf GitHub</a></li>
+        <li><a href="https://hub.docker.com/r/qmcgaw/stackedit" target="_blank" rel="noopener">qmcgaw/stackedit Docker-Image</a></li>
       </ul>
     </section>
   </main>
 
   <footer>
-    <p>&copy; 2026 – Highfish StackEdit Workspace. Persönliche Arbeitsbasis.</p>
+    <p>&copy; 2026 – Highfish StackEdit Workspace (OAuth). MIT-Lizenz.</p>
   </footer>
 </body>
 </html>
