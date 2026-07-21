@@ -17,12 +17,12 @@ services:
       retries: 3
       start_period: 40s
     networks:
-      - ${STACKEDIT_NETWORK:-highfishNetwork}
+      - highfishNetwork
 
 volumes:
   stackedit_data:
     driver: local
 
 networks:
-  ${STACKEDIT_NETWORK:-highfishNetwork}:
+  highfishNetwork:
     external: true
