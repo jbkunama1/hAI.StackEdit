@@ -4,19 +4,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Highfish StackEdit Workspace (OAuth)</title>
+  <title>Highfish StackEdit Workspace (benweet-original)</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css" />
 </head>
 <body>
   <header>
-    <h1>Highfish StackEdit Workspace (OAuth)</h1>
-    <p>Selbst gehosteter Markdown-Editor mit eigener OAuth-Konfiguration für Google Drive und GitHub.</p>
+    <h1>Highfish StackEdit Workspace (benweet-original)</h1>
+    <p>Selbst gehosteter Markdown-Editor auf Basis deines bestehenden `benweet/stackedit:latest`-Setups.</p>
     <p>
       <img src="https://img.shields.io/badge/stackedit-self--hosted-blue" alt="StackEdit Badge" />
       <img src="https://img.shields.io/badge/docker-compose-blue" alt="Docker Compose Badge" />
       <img src="https://img.shields.io/badge/portainer-stack-13BEF9" alt="Portainer Badge" />
       <img src="https://img.shields.io/badge/markdown-editor-success" alt="Markdown Badge" />
-      <img src="https://img.shields.io/badge/OAuth-Google%20%26%20GitHub-orange" alt="OAuth Badge" />
       <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT Badge" />
     </p>
   </header>
@@ -25,9 +24,9 @@
     <section>
       <h2>Über dieses Setup</h2>
       <p>
-        Dieses Projekt stellt eine StackEdit-Instanz bereit, die über eigene OAuth-Credentials mit Google Drive und
-        GitHub kommunizieren kann. Du kannst das Setup wahlweise klassisch mit Docker Compose oder direkt als
-        Portainer Stack deployen.
+        Dieses Projekt bildet dein aktuelles StackEdit-Setup mit dem offiziellen Image `benweet/stackedit:latest`
+        nach. Es eignet sich für Compose- oder Portainer-Deployment und bleibt absichtlich nah an deiner bisherigen
+        laufenden Konfiguration.
       </p>
     </section>
 
@@ -36,32 +35,32 @@
       <ol>
         <li>In Portainer <strong>Stacks</strong> öffnen und <strong>Add stack</strong> wählen.</li>
         <li>Den Compose-Inhalt aus <code>docker-compose.yml</code> in den Web Editor einfügen.</li>
-        <li>OAuth-Variablen im UI setzen.</li>
+        <li>Optional Variablen wie Port oder Container-Name im UI anpassen.</li>
         <li>Externes Netzwerk vorher anlegen.</li>
-        <li>Stack deployen und Domain/Tunnel auf den Host-Port zeigen lassen.</li>
+        <li>Stack deployen.</li>
       </ol>
     </section>
 
     <section>
-      <h2>Cloud-Integration</h2>
+      <h2>Wichtiger Hinweis</h2>
       <p>
-        Mit korrekt gesetzten Umgebungsvariablen kann StackEdit deine eigenen OAuth-Clients für Google und GitHub
-        nutzen. Die eigentliche Verknüpfung (Workspaces, Publish-Targets) erfolgt anschließend in der StackEdit-Oberfläche.
+        Diese Variante bleibt bewusst beim ursprünglichen Image und ergänzt keine spezielle OAuth-Self-Host-Konfiguration
+        für Google Drive oder GitHub. Sie dient als saubere Repo-Version deines aktuellen, funktionierenden Basis-Setups.
       </p>
     </section>
 
     <section>
       <h2>Weiterführende Links</h2>
       <ul>
+        <li><a href="https://hub.docker.com/r/benweet/stackedit/" target="_blank" rel="noopener noreferrer">benweet/stackedit Docker-Image</a></li>
         <li><a href="https://docs.portainer.io/user/docker/stacks/add" target="_blank" rel="noopener noreferrer">Portainer: Add a new stack</a></li>
-        <li><a href="https://hub.docker.com/r/qmcgaw/stackedit" target="_blank" rel="noopener noreferrer">qmcgaw/stackedit Docker-Image</a></li>
         <li><a href="https://github.com/benweet/stackedit" target="_blank" rel="noopener noreferrer">StackEdit auf GitHub</a></li>
       </ul>
     </section>
   </main>
 
   <footer>
-    <p>&copy; 2026 – Highfish StackEdit Workspace (OAuth). MIT-Lizenz.</p>
+    <p>&copy; 2026 – Highfish StackEdit Workspace (benweet-original). MIT-Lizenz.</p>
   </footer>
 </body>
 </html>

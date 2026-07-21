@@ -3,21 +3,19 @@ version: "3.8"
 
 services:
   stackedit:
-    image: ${STACKEDIT_IMAGE:-qmcgaw/stackedit}
+    image: ${STACKEDIT_IMAGE:-benweet/stackedit:latest}
     container_name: ${STACKEDIT_CONTAINER_NAME:-stackedit}
     restart: unless-stopped
     ports:
-      - "${STACKEDIT_PORT:-3030}:8000"
+      - "${STACKEDIT_PORT:-3030}:8080"
     volumes:
       - stackedit_data:/data
-    environment:
-      - LISTENING_PORT=8000
-      - ROOT_URL=${STACKEDIT_ROOT_URL:-/}
-      - USER_BUCKET_NAME=${STACKEDIT_USER_BUCKET_NAME:-stackedit-users}
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
-      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
-      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     networks:
       - ${STACKEDIT_NETWORK:-highfishNetwork}
 
