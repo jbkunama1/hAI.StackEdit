@@ -14,7 +14,6 @@ services:
       - LISTENING_PORT=8000
       - ROOT_URL=${STACKEDIT_ROOT_URL:-/}
       - USER_BUCKET_NAME=${STACKEDIT_USER_BUCKET_NAME:-stackedit-users}
-      # OAuth: bitte in .env setzen
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_API_KEY=${GOOGLE_API_KEY}
       - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
