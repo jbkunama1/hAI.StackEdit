@@ -1,4 +1,8 @@
 
+
+<a href="https://www.buymeacoffee.com/highfish">
+<img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174">
+</a>
 # Highfish StackEdit Workspace (benweet-original)
 
 ![StackEdit](https://img.shields.io/badge/stackedit-self--hosted-blue)
@@ -123,3 +127,4 @@ docker run --rm   -v stackedit_data:/data   -v "$PWD:/backup"   busybox sh -c "t
 ## Lizenz
 
 Dieses Projekt steht unter der **MIT-Lizenz**.
+
