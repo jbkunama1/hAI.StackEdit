@@ -5,11 +5,11 @@
 </a>
 # Highfish StackEdit Workspace (benweet-original)
 
-![StackEdit](https://img.shields.io/badge/stackedit-self--hosted-blue)
-![Docker](https://img.shields.io/badge/docker-compose-blue)
-![Portainer](https://img.shields.io/badge/portainer-stack-13BEF9)
-![Markdown](https://img.shields.io/badge/markdown-editor-success)
-![License](https://img.shields.io/badge/license-MIT-green)
+[![StackEdit](https://img.shields.io/badge/stackedit-self--hosted-blue)](https://github.com/jbkunama1/hAI.StackEdit)
+[![Docker](https://img.shields.io/badge/docker-compose-blue)](https://github.com/jbkunama1/hAI.StackEdit)
+[![Portainer](https://img.shields.io/badge/portainer-stack-13BEF9)](https://github.com/jbkunama1/hAI.StackEdit)
+[![Markdown](https://img.shields.io/badge/markdown-editor-success)](https://github.com/jbkunama1/hAI.StackEdit)
+[![License](https://img.shields.io/badge/license-MIT-green)](https://github.com/jbkunama1/hAI.StackEdit)
 
 Dieses Repo bildet dein bestehendes Setup mit `benweet/stackedit:latest` möglichst nah am Original ab. Es ist für einen stabilen Self-Hosting-Betrieb mit Docker Compose oder als Portainer Stack gedacht.[web:4][web:67]
 
@@ -127,4 +127,3 @@ docker run --rm   -v stackedit_data:/data   -v "$PWD:/backup"   busybox sh -c "t
 ## Lizenz
 
 Dieses Projekt steht unter der **MIT-Lizenz**.
-
