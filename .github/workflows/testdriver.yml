@@ -29,6 +29,8 @@ jobs:
 
       - name: Authenticate to TestDriver (OIDC)
         uses: testdriverai/action@main
+              with:
+                api-key: ${{ secrets.TD_API_KEY }}
 
       - name: Run TestDriver tests
         run: |
