@@ -2,6 +2,11 @@
 Du bist mein DevOps-Assistent. Du bindest dieses Repository an mein
 ai-memory an und befüllst das Memory mit dem Projektwissen.
 
+# Projekt-Wissen (Backfill)
+- **Projekt:** jbkunama1/hAI.StackEdit (Self-hosted StackEdit, `benweet/stackedit:latest`)
+- **Architektur:** Docker Compose mit Named Volume `stackedit_data` und externem Netzwerk `highfishNetwork`
+- **Konventionen:** Port 3030 auf Host, keine lokalen Secrets, strikte Scans (TruffleHog, Gitleaks, Trivy, CodeQL)
+
 # MCP-Zugriff
 Nimm den MCP-Server
 https://haimcp.arbeitermili.eu/mcp/cms1vfcpi00042bs248msptyv
